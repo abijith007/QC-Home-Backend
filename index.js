@@ -26,19 +26,15 @@ app.get("/", (req, res) => {
 });
 
 app.post("/data", (req, res) => {
-  console.log(req.body);
-
   let inputData = "";
 
   for (let i = 0; i < req.body.cols.length; i++) {
-    inputData += "[" + req.body.cols[i].toString() + "]";
+    inputData += "[" + req.body.cols[i].toString() + "]\n";
   }
-  console.log(inputData)
 
   let inputText =
     "func test { \n" +
-    inputData +
-    "\n}" +
+    inputData + "}" +
     "\n\nquReg qr = new quReg[" +
     req.body.cols[0].length +
     "]\n" +
@@ -46,8 +42,6 @@ app.post("/data", (req, res) => {
     "\n" +
     "qr.test()\n" +
     "qr.Pnz()";
-
-  console.log(inputText);
 
   fs.writeFile("input.qc", inputText, function (err) {
     if (err) throw err;
@@ -57,6 +51,7 @@ app.post("/data", (req, res) => {
 
   let outputData = {
     probabilities: [],
+    time : ""
   };
 
   setTimeout(() => {
@@ -65,13 +60,19 @@ app.post("/data", (req, res) => {
       temp = data.split("\n");
       var i = 5;
       while(temp[i][0] == '[') {
-        state = parseInt(temp[i][1])
+        var t = "", probab = 0.0, state = 0;
+        for(var j = 1; temp[i][j] != ']'; j++) {
+          t = t + temp[i][j]
+        }
+        state = parseInt(t)
         temp2 = temp[i].split('\t')
         probab = parseFloat(temp2[2])
         outputData.probabilities.push([state, probab])
         i++;
       }
-      console.log(outputData);
+
+      outputData.time = temp[temp.length - 2].split(',')[1]
+
       res.send(outputData);
     });
   }, 500);

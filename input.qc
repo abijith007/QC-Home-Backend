@@ -1,5 +1,8 @@
 func test { 
-[Rx(pi/4),X]
+[H,Z]
+[X,S]
+[Y,H]
+
 }
 
 quReg qr = new quReg[2]
