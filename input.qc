@@ -1,11 +1,12 @@
 func test { 
-[H,Z]
-[X,S]
-[Y,H]
-
+[H]
+[H]
+[H]
+[H]
+[H]
 }
 
-quReg qr = new quReg[2]
+quReg qr = new quReg[1]
 setPrecision(4)
 
 qr.test()
