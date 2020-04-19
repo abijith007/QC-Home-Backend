@@ -29,8 +29,6 @@ app.get("/", (req, res) => {
 app.post("/data", (req, res) => {
   let access = false;
 
-  console.log(req.body);
-
   for (let i = 0; i < keys.length; i++) {
     if (keys[i] === req.body.key) {
       access = true;
